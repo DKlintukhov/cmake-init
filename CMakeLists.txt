@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.1.1)
+cmake_minimum_required(VERSION 3.31)
 
 if (PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
     message(FATAL_ERROR "In-source builds are not allowed. You should create separate directory for build files")
@@ -39,14 +39,16 @@ set(PACKAGE_RELEASES_URL ${PROJECT_HOMEPAGE_URL}/releases)
 
 find_package(Threads REQUIRED)
 
+include(FetchContent)
+
 add_executable(${TARGET} src/main.cpp)
 target_include_directories(${TARGET} PRIVATE include)
 target_link_libraries(${TARGET} PRIVATE Threads::Threads)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
-    set_property(CACHE CMAKE_BUILD_TYPE 
-        PROPERTY STRINGS 
+    set_property(CACHE CMAKE_BUILD_TYPE
+        PROPERTY STRINGS
         "Debug" "Release" "RelWithDebInfo" "MinSizeRel")
 endif()
 
@@ -59,8 +61,9 @@ set_target_properties(${TARGET} PROPERTIES
 )
 
 if(ENABLE_TESTS)
+    include(cmake/boost.cmake)
     enable_testing()
-   add_subdirectory(tests)
+    add_subdirectory(tests)
 endif()
 
 if(ENABLE_CLANG_TIDY)
