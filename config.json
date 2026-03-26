@@ -1,0 +1,82 @@
+{
+  "questions": [
+    {
+      "id": "project_name",
+      "prompt": "Project Name",
+      "type": "string",
+      "default": "my_project"
+    },
+    {
+      "id": "project_version",
+      "prompt": "Project Version",
+      "type": "string",
+      "default": "0.1.0"
+    },
+    {
+      "id": "target_type",
+      "prompt": "Target Type",
+      "type": "choice",
+      "options": ["Executable", "Static Library", "Shared Library"],
+      "default": "Executable"
+    },
+    {
+      "id": "cmake_version",
+      "prompt": "Minimum CMake Version",
+      "type": "string",
+      "default": "3.25"
+    },
+    {
+      "id": "language",
+      "prompt": "Languages",
+      "type": "choice",
+      "options": ["CXX", "C", "C CXX"],
+      "default": "CXX"
+    },
+    {
+      "id": "cxx_standard",
+      "prompt": "C++ Standard",
+      "type": "choice",
+      "options": ["11", "14", "17", "20", "23"],
+      "default": "20"
+    },
+    {
+      "id": "c_standard",
+      "prompt": "C Standard (if C is used)",
+      "type": "choice",
+      "options": ["99", "11", "17", "23"],
+      "default": "17"
+    },
+    {
+      "id": "package_manager",
+      "prompt": "Package Manager",
+      "type": "choice",
+      "options": ["None", "vcpkg", "conan"],
+      "default": "None"
+    },
+    {
+      "id": "enable_testing",
+      "prompt": "Enable Testing?",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "id": "testing_framework",
+      "prompt": "Testing Framework",
+      "type": "choice",
+      "options": ["GTest", "Catch2", "Boost.Test"],
+      "default": "GTest"
+    },
+    {
+      "id": "enable_clang_tidy",
+      "prompt": "Enable Clang-Tidy?",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "id": "enable_cppcheck",
+      "prompt": "Enable Cppcheck?",
+      "type": "boolean",
+      "default": true
+    }
+  ]
+}
