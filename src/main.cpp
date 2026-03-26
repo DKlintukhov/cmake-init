@@ -18,11 +18,16 @@
  */
 
 
-#include "pch.h"
+#include "config.h"
 
 int main(int args, const char** argv)
 {
-    std::println("Hello, world!");
+    const auto exe_filepath = std::filesystem::path(argv[0]);
+    const auto config_filepath = exe_filepath.parent_path() / "config.json";
+    const auto config = Config::load_from_file(config_filepath);
+    if (!config) {
+        return 1;
+    }
 
     return 0;
 }

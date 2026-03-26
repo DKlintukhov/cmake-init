@@ -52,7 +52,8 @@ include(cmake/boost.cmake)
 
 # Setup main executable
 set(TARGET cmake-init)
-add_executable(${TARGET} src/main.cpp)
+set(SRC ${CMAKE_SOURCE_DIR}/src/config.cpp)
+add_executable(${TARGET} src/main.cpp ${SRC})
 
 # Target configuration
 target_include_directories(${TARGET} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src ${Boost_SOURCE_DIR})
@@ -61,6 +62,13 @@ find_package(Threads REQUIRED)
 target_link_libraries(${TARGET} PRIVATE 
     Threads::Threads 
     Boost::json
+)
+
+# Copy config.json to the output directory
+add_custom_command(TARGET ${TARGET} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/config.json"
+        "$<TARGET_FILE_DIR:${TARGET}>"
 )
 
 # Optional Tooling
