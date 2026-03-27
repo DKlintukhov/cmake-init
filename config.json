@@ -29,8 +29,8 @@
       "id": "language",
       "prompt": "Languages",
       "type": "choice",
-      "options": ["CXX", "C", "C CXX"],
-      "default": "CXX"
+      "options": ["C++", "C", "C/C++"],
+      "default": "C++"
     },
     {
       "id": "cxx_standard",
