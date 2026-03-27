@@ -52,7 +52,10 @@ include(cmake/boost.cmake)
 
 # Setup main executable
 set(TARGET cmake-init)
-set(SRC ${CMAKE_SOURCE_DIR}/src/config.cpp)
+set(SRC 
+    ${CMAKE_SOURCE_DIR}/src/config.cpp
+    ${CMAKE_SOURCE_DIR}/src/prompter.cpp
+)
 add_executable(${TARGET} src/main.cpp ${SRC})
 
 # Target configuration

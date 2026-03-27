@@ -19,15 +19,26 @@
 
 
 #include "config.h"
+#include "prompter.h"
+#include <iostream>
 
 int main(int args, const char** argv)
 {
     const auto exe_filepath = std::filesystem::path(argv[0]);
     const auto config_filepath = exe_filepath.parent_path() / "config.json";
-    const auto config = Config::load_from_file(config_filepath);
-    if (!config) {
+    
+    auto config_opt = Config::load_from_file(config_filepath);
+    if (!config_opt) {
+        std::cerr << "Failed to load configuration from " << config_filepath << "\n";
         return 1;
     }
 
+    auto& config = *config_opt;
+    
+    Prompter prompter;
+    prompter.prompt_all(config);
+
+    // TODO: Pass config to CMake generator
+    
     return 0;
 }
