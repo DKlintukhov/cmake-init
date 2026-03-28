@@ -18,39 +18,30 @@
  */
 
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#include <boost/test/unit_test.hpp>
+#include "config.h"
+#include "generation_context.h"
 
-#include <filesystem>
-#include <string>
-#include <string_view>
-#include <vector>
-#include <map>
-#include <optional>
+BOOST_AUTO_TEST_SUITE(GenerationContextTestSuite)
 
-struct Question {
-    std::string id;
-    std::string prompt;
-    std::string type;
-    std::string default_val;
-    std::vector<std::string> options;
-};
+BOOST_AUTO_TEST_CASE(test_generation_context_defaults) {
+    Config config; // Empty answers
+    GenerationContext ctx(config);
 
-class Config {
-public:
-    static std::optional<Config> load_from_file(std::filesystem::path filepath);
+    BOOST_CHECK_EQUAL(ctx.project_name(), "my_project");
+    BOOST_CHECK_EQUAL(ctx.project_version(), "0.1.0");
+    BOOST_CHECK_EQUAL(ctx.enable_testing(), false);
+}
 
-    const std::vector<Question>& questions() const;
-    
-    void set_answer(std::string id, std::string answer);
-    
-    std::string_view get_answer(std::string_view id, std::string_view default_val = "") const;
-    
-    const std::map<std::string, std::string>& all_answers() const;
+BOOST_AUTO_TEST_CASE(test_generation_context_custom_values) {
+    Config config;
+    config.set_answer("project_name", "TestProject");
+    config.set_answer("enable_testing", "true");
 
-private:
-    std::vector<Question> questions_;
-    std::map<std::string, std::string> answers_;
-};
+    GenerationContext ctx(config);
 
-#endif
+    BOOST_CHECK_EQUAL(ctx.project_name(), "TestProject");
+    BOOST_CHECK_EQUAL(ctx.enable_testing(), true);
+}
+
+BOOST_AUTO_TEST_SUITE_END()

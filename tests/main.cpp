@@ -18,39 +18,5 @@
  */
 
 
-#ifndef CONFIG_H
-#define CONFIG_H
-
-#include <filesystem>
-#include <string>
-#include <string_view>
-#include <vector>
-#include <map>
-#include <optional>
-
-struct Question {
-    std::string id;
-    std::string prompt;
-    std::string type;
-    std::string default_val;
-    std::vector<std::string> options;
-};
-
-class Config {
-public:
-    static std::optional<Config> load_from_file(std::filesystem::path filepath);
-
-    const std::vector<Question>& questions() const;
-    
-    void set_answer(std::string id, std::string answer);
-    
-    std::string_view get_answer(std::string_view id, std::string_view default_val = "") const;
-    
-    const std::map<std::string, std::string>& all_answers() const;
-
-private:
-    std::vector<Question> questions_;
-    std::map<std::string, std::string> answers_;
-};
-
-#endif
+#define BOOST_TEST_MODULE CMakeInitTests
+#include <boost/test/included/unit_test.hpp>
