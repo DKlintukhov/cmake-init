@@ -20,6 +20,7 @@
 
 #include "config.h"
 #include "prompter.h"
+#include "generation_context.h"
 #include <iostream>
 
 int main(int args, const char** argv)
@@ -38,7 +39,7 @@ int main(int args, const char** argv)
     Prompter prompter;
     prompter.prompt_all(config);
 
-    // TODO: Pass config to CMake generator
+    GenerationContext gen_context(config);
     
     return 0;
 }

@@ -18,10 +18,11 @@
  */
 
 
-#define BOOST_TEST_MODULE ConfigTest
-#include <boost/test/included/unit_test.hpp>
+#include <boost/test/unit_test.hpp>
 #include <fstream>
 #include "config.h"
+
+BOOST_AUTO_TEST_SUITE(ConfigTestSuite)
 
 BOOST_AUTO_TEST_CASE(test_config_load) {
     // Create a temporary config file for testing
@@ -62,3 +63,5 @@ BOOST_AUTO_TEST_CASE(test_config_load_invalid) {
     auto config_opt = Config::load_from_file("nonexistent_file.json");
     BOOST_CHECK(!config_opt.has_value());
 }
+
+BOOST_AUTO_TEST_SUITE_END()

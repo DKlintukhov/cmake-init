@@ -55,8 +55,10 @@ set(TARGET cmake-init)
 set(SRC 
     ${CMAKE_SOURCE_DIR}/src/config.cpp
     ${CMAKE_SOURCE_DIR}/src/prompter.cpp
+    ${CMAKE_SOURCE_DIR}/src/generation_context.cpp
 )
-add_executable(${TARGET} src/main.cpp ${SRC})
+add_executable(${TARGET} src/main.cpp ${SRC}
+    src/generation_context.h src/generation_context.cpp)
 
 # Target configuration
 target_include_directories(${TARGET} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src ${Boost_SOURCE_DIR})

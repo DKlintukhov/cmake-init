@@ -17,6 +17,7 @@
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+
 #include "config.h"
 #include <fstream>
 #include <print>
@@ -24,7 +25,7 @@
 
 namespace json = boost::json;
 
-[[nodiscard]] std::optional<Config> Config::load_from_file(std::filesystem::path filepath) {
+std::optional<Config> Config::load_from_file(std::filesystem::path filepath) {
     std::ifstream config_file(filepath);
     if (!config_file.is_open()) {
         std::println(stderr, "Failed to open config file");
@@ -76,7 +77,7 @@ namespace json = boost::json;
     return config;
 }
 
-[[nodiscard]] const std::vector<Question>& Config::questions() const noexcept {
+const std::vector<Question>& Config::questions() const {
     return questions_;
 }
 
@@ -84,14 +85,14 @@ void Config::set_answer(std::string id, std::string answer) {
     answers_.insert_or_assign(std::move(id), std::move(answer));
 }
 
-[[nodiscard]] std::string_view Config::get_answer(std::string_view id, std::string_view default_val) const noexcept {
-    auto it = answers_.find(std::string(id));
+std::string_view Config::get_answer(std::string_view id, std::string_view default_val) const {
+    auto it = answers_.find(id.data());
     if (it != answers_.end()) {
         return it->second;
     }
     return default_val;
 }
 
-[[nodiscard]] const std::map<std::string, std::string>& Config::all_answers() const noexcept {
+const std::map<std::string, std::string>& Config::all_answers() const {
     return answers_;
 }

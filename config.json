@@ -36,15 +36,15 @@
       "id": "cxx_standard",
       "prompt": "C++ Standard",
       "type": "choice",
-      "options": ["11", "14", "17", "20", "23"],
-      "default": "20"
+      "options": ["11", "14", "17", "20", "23", "26"],
+      "default": "23"
     },
     {
       "id": "c_standard",
       "prompt": "C Standard (if C is used)",
       "type": "choice",
-      "options": ["99", "11", "17", "23"],
-      "default": "17"
+      "options": ["11", "17", "23"],
+      "default": "23"
     },
     {
       "id": "package_manager",
