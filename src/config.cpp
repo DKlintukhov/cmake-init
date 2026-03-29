@@ -20,16 +20,14 @@
 
 #include "config.h"
 #include <fstream>
-#include <print>
 #include <boost/json/src.hpp>
 
 namespace json = boost::json;
 
-std::optional<Config> Config::load_from_file(std::filesystem::path filepath) {
+std::expected<Config, std::string> Config::load_from_file(std::filesystem::path filepath) {
     std::ifstream config_file(filepath);
     if (!config_file.is_open()) {
-        std::println(stderr, "Failed to open config file");
-        return std::nullopt;
+        return std::unexpected("Failed to open config file");
     }
 
     std::stringstream buffer;
@@ -38,15 +36,13 @@ std::optional<Config> Config::load_from_file(std::filesystem::path filepath) {
     json::value jv;
     try {
         jv = json::parse(buffer.str());
-    } catch (const std::exception& ex) {
-        std::println(stderr, "Failed to parse config file: {}", ex.what());
-        return std::nullopt;
+    } catch (const std::exception& e) {
+        return std::unexpected(std::string("Failed to parse config file: ") + e.what());
     }
 
     auto& root = jv.as_object();
     if (!root.contains("questions") || !root.at("questions").is_array()) {
-        std::println(stderr, "The config file doesn't contain the required \"questions\" field");
-        return std::nullopt;
+        return std::unexpected("The config file doesn't contain the required \"questions\" field");
     }
 
     Config config;

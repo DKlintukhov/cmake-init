@@ -26,7 +26,7 @@
 #include <string_view>
 #include <vector>
 #include <map>
-#include <optional>
+#include <expected>
 
 struct Question {
     std::string id;
@@ -38,7 +38,7 @@ struct Question {
 
 class Config {
 public:
-    static std::optional<Config> load_from_file(std::filesystem::path filepath);
+    static std::expected<Config, std::string> load_from_file(std::filesystem::path filepath);
 
     const std::vector<Question>& questions() const;
     

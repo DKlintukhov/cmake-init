@@ -59,7 +59,7 @@ void Prompter::prompt_all(Config& config) {
             out_ << q.prompt << padding << " : " << answer << "\n";
         }
         
-        while (true) {
+        for (;;) {
             out_ << "OK? (yes/no): ";
             std::string input;
             std::getline(in_, input);
