@@ -22,6 +22,10 @@
 
 GenerationContext::GenerationContext(const Config& config) : config_(config) {}
 
+std::string GenerationContext::location() const {
+    return std::string(config_.get_answer("location", "."));
+}
+
 std::string GenerationContext::project_name() const {
     return std::string(config_.get_answer("project_name", "my_project"));
 }

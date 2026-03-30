@@ -27,6 +27,7 @@ class GenerationContext {
 public:
     explicit GenerationContext(const Config& config);
 
+    std::string location() const;
     std::string project_name() const;
     std::string project_version() const;
     std::string target_type() const;
