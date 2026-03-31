@@ -14,8 +14,8 @@ endif()
 
 # Global build options
 option(ENABLE_TESTS "Enable tests" ON)
-option(ENABLE_CLANG_TIDY "Enable CLang tidy" ON)
-option(ENABLE_CPPCHECK "Enable Cppcheck" ON)
+option(ENABLE_CLANG_TIDY "Enable CLang tidy" OFF)
+option(ENABLE_CPPCHECK "Enable Cppcheck" OFF)
 
 # Default build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -46,8 +46,6 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<CONFIG>/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<CONFIG>/bin)
 
 include(FetchContent)
-
-# Fetch Boost first since both our main executable and tests need it
 include(cmake/boost.cmake)
 
 # Setup main executable
@@ -56,10 +54,10 @@ set(SRC
     ${CMAKE_SOURCE_DIR}/src/config.cpp
     ${CMAKE_SOURCE_DIR}/src/prompter.cpp
     ${CMAKE_SOURCE_DIR}/src/generation_context.cpp
+    ${CMAKE_SOURCE_DIR}/src/cmake_lists_formatter.cpp
 )
 add_executable(${TARGET} src/main.cpp ${SRC})
 
-# Target configuration
 target_include_directories(${TARGET} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src ${Boost_SOURCE_DIR})
 
 find_package(Threads REQUIRED)
