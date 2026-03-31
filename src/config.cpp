@@ -34,10 +34,10 @@ std::expected<Config, std::string> Config::load_from_file(std::filesystem::path 
     buffer << config_file.rdbuf();
 
     json::value jv;
-    try {
-        jv = json::parse(buffer.str());
-    } catch (const std::exception& e) {
-        return std::unexpected(std::string("Failed to parse config file: ") + e.what());
+    boost::system::error_code ec;
+    jv = json::parse(buffer.str(), ec);
+    if (ec) {
+        return std::unexpected(std::string("Failed to parse config file: ") + ec.message());
     }
 
     auto& root = jv.as_object();

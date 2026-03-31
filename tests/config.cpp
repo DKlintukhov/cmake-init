@@ -37,6 +37,7 @@ BOOST_AUTO_TEST_CASE(test_config_load) {
         ]
     })";
 
+    std::error_code ec;
     const auto config_file = std::filesystem::path("test_config.json");
     std::ofstream out(config_file);
     out << test_config;
@@ -56,7 +57,7 @@ BOOST_AUTO_TEST_CASE(test_config_load) {
     // Test missing answer with default
     BOOST_CHECK_EQUAL(config.get_answer("missing", "default_val"), "default_val");
 
-    std::filesystem::remove("test_config.json");
+    std::filesystem::remove("test_config.json", ec);
 }
 
 BOOST_AUTO_TEST_CASE(test_config_load_invalid) {

@@ -21,23 +21,31 @@
 #include "config.h"
 #include "prompter.h"
 #include "generation_context.h"
+#include "cmake_lists_formatter.h"
 #include <print>
 
 int main(int args, const char** argv)
 {
     const auto exe_filepath = std::filesystem::path(argv[0]);
     const auto config_filepath = exe_filepath.parent_path() / "config.json";
-    
+
     auto config = Config::load_from_file(config_filepath);
     if (!config) {
         std::println(std::cerr, "Failed to load configuration from {}: {}", config_filepath.string(), config.error());
         return 1;
     }
-    
+
     Prompter prompter;
     prompter.prompt_all(*config);
 
     GenerationContext gen_context(*config);
-    
+    CMakeListsFormatter formatter(gen_context);
+
+    println("{}", formatter.format_cmake_version());
+    println("{}", formatter.format_project());
+    println("{}", formatter.format_cxx_standard());
+    println("{}", formatter.format_c_standard());
+    println("{}", formatter.format_compile_commands());
+
     return 0;
 }
