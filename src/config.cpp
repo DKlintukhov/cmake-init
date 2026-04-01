@@ -24,7 +24,7 @@
 
 namespace json = boost::json;
 
-std::expected<Config, std::string> Config::load_from_file(std::filesystem::path filepath) {
+std::expected<Config, std::string> Config::load_from_file(const std::filesystem::path& filepath) {
     std::ifstream config_file(filepath);
     if (!config_file.is_open()) {
         return std::unexpected("Failed to open config file");

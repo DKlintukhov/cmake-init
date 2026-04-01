@@ -23,6 +23,12 @@
 
 #include "config.h"
 
+enum class TargetType {
+    Executable,
+    Static_lib,
+    Shared_lib
+};
+
 class GenerationContext {
 public:
     explicit GenerationContext(const Config& config);
@@ -30,7 +36,7 @@ public:
     std::string location() const;
     std::string project_name() const;
     std::string project_version() const;
-    std::string target_type() const;
+    TargetType target_type() const;
     std::string cmake_version() const;
     std::string language() const;
     int cxx_standard() const;

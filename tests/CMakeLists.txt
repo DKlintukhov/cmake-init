@@ -8,7 +8,7 @@ add_executable(${TARGET}_test
 target_include_directories(${TARGET}_test PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(${TARGET}_test PRIVATE Boost::unit_test_framework Boost::json)
 
-add_test(NAME ${TARGET}_test COMMAND ${TARGET}_test --log-level=test_suite)
+add_test(NAME ${TARGET}_test COMMAND ${TARGET}_test)
 
 # Copy config.json to the test output directory
 add_custom_command(TARGET ${TARGET}_test POST_BUILD

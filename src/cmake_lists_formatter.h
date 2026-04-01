@@ -31,9 +31,11 @@ public:
 
     std::string format_cmake_version() const;
     std::string format_project() const;
+    std::string format_options() const;
     std::string format_cxx_standard() const;
     std::string format_c_standard() const;
     std::string format_compile_commands() const;
+    std::string format_bin() const;
 
 private:
     const GenerationContext& ctx_;

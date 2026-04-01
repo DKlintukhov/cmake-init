@@ -34,8 +34,11 @@ std::string GenerationContext::project_version() const {
     return std::string(config_.get_answer("project_version", "0.1.0"));
 }
 
-std::string GenerationContext::target_type() const {
-    return std::string(config_.get_answer("project_version", "Executable"));
+TargetType GenerationContext::target_type() const {
+    const auto type = config_.get_answer("project_version", "Executable");
+    if (type == "Static Library") return TargetType::Static_lib;
+    if (type == "Shared Library") return TargetType::Shared_lib;
+    return TargetType::Executable;
 }
 
 std::string GenerationContext::cmake_version() const {

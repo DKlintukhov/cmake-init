@@ -60,7 +60,7 @@ void Prompter::prompt_all(Config& config) {
         }
         
         for (;;) {
-            out_ << "OK? (yes/no): ";
+            out_ << "OK? (yes/no) [yes]: ";
             std::string input;
             std::getline(in_, input);
 
@@ -68,14 +68,12 @@ void Prompter::prompt_all(Config& config) {
             if (start != std::string::npos) {
                 auto end = input.find_last_not_of(" \t\r\n");
                 input = input.substr(start, end - start + 1);
-            } else {
-                input = "";
             }
 
             std::transform(input.begin(), input.end(), input.begin(),
                            [](unsigned char c){ return std::tolower(c); });
 
-            if (input == "yes" || input == "y") {
+            if (input.empty() || input == "yes" || input == "y") {
                 ok = true;
                 break;
             } else if (input == "no" || input == "n") {
