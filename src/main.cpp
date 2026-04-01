@@ -43,9 +43,11 @@ int main(int args, const char** argv)
 
     println("{}", formatter.format_cmake_version());
     println("{}", formatter.format_project());
+    println("{}", formatter.format_options());
     println("{}", formatter.format_cxx_standard());
     println("{}", formatter.format_c_standard());
     println("{}", formatter.format_compile_commands());
+    println("{}", formatter.format_bin());
 
     return 0;
 }

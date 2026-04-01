@@ -38,7 +38,7 @@ struct Question {
 
 class Config {
 public:
-    static std::expected<Config, std::string> load_from_file(std::filesystem::path filepath);
+    static std::expected<Config, std::string> load_from_file(const std::filesystem::path& filepath);
 
     const std::vector<Question>& questions() const;
     

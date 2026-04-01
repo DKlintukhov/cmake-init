@@ -19,47 +19,65 @@
 
 
 #include "cmake_lists_formatter.h"
-#include <format>
+#include "generation_context.h"
+#include <sstream>
 
 CMakeListsFormatter::CMakeListsFormatter(const GenerationContext& ctx) : ctx_(ctx) {}
 
 std::string CMakeListsFormatter::format_cmake_version() const {
-    return std::format("cmake_minimum_required(VERSION {})\n", ctx_.cmake_version());
+    std::stringstream ss;
+    ss << "cmake_minimum_required(VERSION " << ctx_.cmake_version() << ")\n";
+    return ss.str();
 }
 
 std::string CMakeListsFormatter::format_project() const {
-    return std::format(
-        "project(\n"
-        "    {}\n"
-        "    VERSION {}\n"
-        "    HOMEPAGE_URL \"{}\"\n"
-        "    DESCRIPTION \"{}\"\n"
-        "    LANGUAGES {}\n"
-        ")\n",
-        ctx_.project_name(),
-        ctx_.project_version(),
-        "homepage", // TODO: homepage
-        "description", // TODO: description
-        ctx_.language()
-    );
+    std::stringstream ss;
+    ss << "set(TARGET " << ctx_.project_name() << ")\n";
+    ss << "project(\n";
+    ss << "    ${TARGET}\n";
+    ss << "    VERSION " << ctx_.project_version() << "\n";
+    ss << "    HOMEPAGE_URL \"Project homepage\"\n";
+    ss << "    DESCRIPTION \"Project description\"\n";
+    ss << "    LANGUAGES " << ctx_.language() << "\n";
+    ss << ")\n";
+    ss << "if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)\n";
+    ss << "    message(FATAL_ERROR \"In-source builds are not allowed. You should create separate directory for build files\")\n";
+    ss << "endif()\n";
+    return ss.str();
+}
+
+std::string CMakeListsFormatter::format_options() const {
+    std::stringstream ss;
+    if (ctx_.enable_testing()) ss << "option(ENABLE_TESTS \"Enable tests\" OFF)\n";
+    if (ctx_.enable_clang_tidy()) ss << "option(ENABLE_CLANG_TIDY \"Enable Clang-Tidy\" OFF)\n";
+    if (ctx_.enable_cppcheck()) ss << "option(ENABLE_CPPCHECK \"Enable Cppcheck\" OFF)\n";
+    return ss.str();
 }
 
 std::string CMakeListsFormatter::format_cxx_standard() const {
-    return std::format("set(CMAKE_CXX_STANDARD {})\n"
-                       "set(CMAKE_CXX_STANDARD_REQUIRED ON)\n"
-                       "set(CMAKE_CXX_EXTENSIONS OFF)\n",
-                        ctx_.cxx_standard()
-    );
+    std::stringstream ss;
+    ss << "set(CMAKE_CXX_STANDARD " << ctx_.cxx_standard() << ")\n";
+    ss << "set(CMAKE_CXX_STANDARD_REQUIRED ON)\n";
+    ss << "set(CMAKE_CXX_EXTENSIONS OFF)\n";
+    return ss.str();
 }
 
 std::string CMakeListsFormatter::format_c_standard() const {
-    return std::format("set(CMAKE_C_STANDARD {})\n"
-                       "set(CMAKE_C_STANDARD_REQUIRED ON)\n"
-                       "set(CMAKE_C_EXTENSIONS OFF)\n",
-                       ctx_.c_standard()
-    );
+    std::stringstream ss;
+    ss << "set(CMAKE_C_STANDARD " << ctx_.c_standard() << ")\n";
+    ss << "set(CMAKE_C_STANDARD_REQUIRED ON)\n";
+    ss << "set(CMAKE_C_EXTENSIONS OFF)\n";
+    return ss.str();
 }
 
 std::string CMakeListsFormatter::format_compile_commands() const {
-    return std::format("set(CMAKE_COMPILE_WARNING_AS_ERROR ON)\n");
+    return "set(CMAKE_COMPILE_WARNING_AS_ERROR ON)\n";
+}
+
+std::string CMakeListsFormatter::format_bin() const {
+    switch (ctx_.target_type()) {
+        case TargetType::Executable: return "add_executable(${TARGET} ${SRC})\n";
+        case TargetType::Static_lib: return "add_library(${TARGET} static ${SRC})\n";
+        default: return "add_library(${TARGET} ${SRC})\n";
+    }
 }

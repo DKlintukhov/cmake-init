@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.31)
 
+set(TARGET cmake-init)
+
 project(
-    cmake-init
+    ${TARGET}
     VERSION 0.1.0
     HOMEPAGE_URL "https://github.com/DKlintukhov/cmake-init"
     DESCRIPTION "A CMake C++ project generator with professional tooling integration."
@@ -13,8 +15,8 @@ if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
 endif()
 
 # Global build options
-option(ENABLE_TESTS "Enable tests" ON)
-option(ENABLE_CLANG_TIDY "Enable CLang tidy" OFF)
+option(ENABLE_TESTS "Enable tests" OFF)
+option(ENABLE_CLANG_TIDY "Enable Clang-Tidy" OFF)
 option(ENABLE_CPPCHECK "Enable Cppcheck" OFF)
 
 # Default build type
@@ -49,7 +51,6 @@ include(FetchContent)
 include(cmake/boost.cmake)
 
 # Setup main executable
-set(TARGET cmake-init)
 set(SRC 
     ${CMAKE_SOURCE_DIR}/src/config.cpp
     ${CMAKE_SOURCE_DIR}/src/prompter.cpp
