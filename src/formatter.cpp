@@ -18,19 +18,21 @@
  */
 
 
-#include "cmake_lists_formatter.h"
-#include "generation_context.h"
+#include "cmake-init/formatter.h"
+#include "cmake-init/generation_context.h"
 #include <sstream>
 
-CMakeListsFormatter::CMakeListsFormatter(const GenerationContext& ctx) : ctx_(ctx) {}
+namespace cmake_init {
 
-std::string CMakeListsFormatter::format_cmake_version() const {
+Formatter::Formatter(const GenerationContext& ctx) : ctx_(ctx) {}
+
+std::string Formatter::format_cmake_version() const {
     std::stringstream ss;
     ss << "cmake_minimum_required(VERSION " << ctx_.cmake_version() << ")\n";
     return ss.str();
 }
 
-std::string CMakeListsFormatter::format_project() const {
+std::string Formatter::format_project() const {
     std::stringstream ss;
     ss << "set(TARGET " << ctx_.project_name() << ")\n";
     ss << "project(\n";
@@ -46,7 +48,7 @@ std::string CMakeListsFormatter::format_project() const {
     return ss.str();
 }
 
-std::string CMakeListsFormatter::format_options() const {
+std::string Formatter::format_options() const {
     std::stringstream ss;
     if (ctx_.enable_testing()) ss << "option(ENABLE_TESTS \"Enable tests\" OFF)\n";
     if (ctx_.enable_clang_tidy()) ss << "option(ENABLE_CLANG_TIDY \"Enable Clang-Tidy\" OFF)\n";
@@ -54,7 +56,7 @@ std::string CMakeListsFormatter::format_options() const {
     return ss.str();
 }
 
-std::string CMakeListsFormatter::format_cxx_standard() const {
+std::string Formatter::format_cxx_standard() const {
     std::stringstream ss;
     ss << "set(CMAKE_CXX_STANDARD " << ctx_.cxx_standard() << ")\n";
     ss << "set(CMAKE_CXX_STANDARD_REQUIRED ON)\n";
@@ -62,7 +64,7 @@ std::string CMakeListsFormatter::format_cxx_standard() const {
     return ss.str();
 }
 
-std::string CMakeListsFormatter::format_c_standard() const {
+std::string Formatter::format_c_standard() const {
     std::stringstream ss;
     ss << "set(CMAKE_C_STANDARD " << ctx_.c_standard() << ")\n";
     ss << "set(CMAKE_C_STANDARD_REQUIRED ON)\n";
@@ -70,14 +72,16 @@ std::string CMakeListsFormatter::format_c_standard() const {
     return ss.str();
 }
 
-std::string CMakeListsFormatter::format_compile_commands() const {
+std::string Formatter::format_compile_commands() const {
     return "set(CMAKE_COMPILE_WARNING_AS_ERROR ON)\n";
 }
 
-std::string CMakeListsFormatter::format_bin() const {
+std::string Formatter::format_bin() const {
     switch (ctx_.target_type()) {
         case TargetType::Executable: return "add_executable(${TARGET} ${SRC})\n";
         case TargetType::Static_lib: return "add_library(${TARGET} static ${SRC})\n";
         default: return "add_library(${TARGET} ${SRC})\n";
     }
 }
+
+} // namespace cmake_init

@@ -19,14 +19,14 @@
 
 
 #include <boost/test/unit_test.hpp>
-#include "config.h"
-#include "generation_context.h"
+#include "cmake-init/config.h"
+#include "cmake-init/generation_context.h"
 
 BOOST_AUTO_TEST_SUITE(GenerationContextTestSuite)
 
 BOOST_AUTO_TEST_CASE(test_generation_context_defaults) {
-    Config config; // Empty answers
-    GenerationContext ctx(config);
+    cmake_init::Config config; // Empty answers
+    cmake_init::GenerationContext ctx(config);
 
     BOOST_CHECK_EQUAL(ctx.project_name(), "my_project");
     BOOST_CHECK_EQUAL(ctx.project_version(), "0.1.0");
@@ -34,11 +34,11 @@ BOOST_AUTO_TEST_CASE(test_generation_context_defaults) {
 }
 
 BOOST_AUTO_TEST_CASE(test_generation_context_custom_values) {
-    Config config;
+    cmake_init::Config config;
     config.set_answer("project_name", "TestProject");
     config.set_answer("enable_testing", "true");
 
-    GenerationContext ctx(config);
+    cmake_init::GenerationContext ctx(config);
 
     BOOST_CHECK_EQUAL(ctx.project_name(), "TestProject");
     BOOST_CHECK_EQUAL(ctx.enable_testing(), true);

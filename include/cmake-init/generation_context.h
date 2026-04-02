@@ -18,39 +18,40 @@
  */
 
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef GENERATION_CONTEXT_H
+#define GENERATION_CONTEXT_H
 
-#include <filesystem>
-#include <string>
-#include <string_view>
-#include <vector>
-#include <map>
-#include <expected>
+#include "cmake-init/config.h"
 
-struct Question {
-    std::string id;
-    std::string prompt;
-    std::string type;
-    std::string default_val;
-    std::vector<std::string> options;
+namespace cmake_init {
+
+enum class TargetType {
+    Executable,
+    Static_lib,
+    Shared_lib
 };
 
-class Config {
+class GenerationContext {
 public:
-    static std::expected<Config, std::string> load_from_file(const std::filesystem::path& filepath);
+    explicit GenerationContext(const Config& config);
 
-    const std::vector<Question>& questions() const;
-    
-    void set_answer(std::string id, std::string answer);
-    
-    std::string_view get_answer(std::string_view id, std::string_view default_val = "") const;
-    
-    const std::map<std::string, std::string>& all_answers() const;
+    std::string location() const;
+    std::string project_name() const;
+    std::string project_version() const;
+    TargetType target_type() const;
+    std::string cmake_version() const;
+    std::string language() const;
+    int cxx_standard() const;
+    int c_standard() const;
+    //std::string package_manager() const; TODO: Check package_maanger
+    bool enable_testing() const;
+    bool enable_clang_tidy() const;
+    bool enable_cppcheck() const;
 
 private:
-    std::vector<Question> questions_;
-    std::map<std::string, std::string> answers_;
+    const Config& config_;
 };
 
-#endif
+} // namespace cmake_init
+
+#endif // GENERATION_CONTEXT_H

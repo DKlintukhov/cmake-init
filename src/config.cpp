@@ -18,11 +18,14 @@
  */
 
 
-#include "config.h"
+#include "cmake-init/config.h"
 #include <fstream>
+#include <sstream>
 #include <boost/json/src.hpp>
 
 namespace json = boost::json;
+
+namespace cmake_init {
 
 std::expected<Config, std::string> Config::load_from_file(const std::filesystem::path& filepath) {
     std::ifstream config_file(filepath);
@@ -54,7 +57,7 @@ std::expected<Config, std::string> Config::load_from_file(const std::filesystem:
         question.id = q.at("id").as_string().c_str();
         question.prompt = q.at("prompt").as_string().c_str();
         question.type = q.at("type").as_string().c_str();
-        
+
         if (question.type == "boolean") {
             question.default_val = q.at("default").as_bool() ? "true" : "false";
         } else {
@@ -92,3 +95,5 @@ std::string_view Config::get_answer(std::string_view id, std::string_view defaul
 const std::map<std::string, std::string>& Config::all_answers() const {
     return answers_;
 }
+
+} // namespace cmake_init

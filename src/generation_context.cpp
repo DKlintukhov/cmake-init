@@ -18,7 +18,9 @@
  */
 
 
-#include "generation_context.h"
+#include "cmake-init/generation_context.h"
+
+namespace cmake_init {
 
 GenerationContext::GenerationContext(const Config& config) : config_(config) {}
 
@@ -35,7 +37,7 @@ std::string GenerationContext::project_version() const {
 }
 
 TargetType GenerationContext::target_type() const {
-    const auto type = config_.get_answer("project_version", "Executable");
+    const auto type = config_.get_answer("target_type", "Executable");
     if (type == "Static Library") return TargetType::Static_lib;
     if (type == "Shared Library") return TargetType::Shared_lib;
     return TargetType::Executable;
@@ -68,3 +70,5 @@ bool GenerationContext::enable_clang_tidy() const {
 bool GenerationContext::enable_cppcheck() const {
     return config_.get_answer("enable_cppcheck", "false") == "true";
 }
+
+} // namespace cmake_init

@@ -20,7 +20,8 @@
 
 #include <boost/test/unit_test.hpp>
 #include <fstream>
-#include "config.h"
+#include <filesystem>
+#include "cmake-init/config.h"
 
 BOOST_AUTO_TEST_SUITE(ConfigTestSuite)
 
@@ -43,17 +44,17 @@ BOOST_AUTO_TEST_CASE(test_config_load) {
     out << test_config;
     out.close();
 
-    auto config_opt = Config::load_from_file(config_file);
+    auto config_opt = cmake_init::Config::load_from_file(config_file);
     BOOST_REQUIRE(config_opt.has_value());
 
     auto& config = config_opt.value();
     BOOST_CHECK_EQUAL(config.questions().size(), 1);
     BOOST_CHECK_EQUAL(config.questions()[0].id, "project_name");
-    
+
     // Test answering questions
     config.set_answer("project_name", "test_project");
     BOOST_CHECK_EQUAL(config.get_answer("project_name"), "test_project");
-    
+
     // Test missing answer with default
     BOOST_CHECK_EQUAL(config.get_answer("missing", "default_val"), "default_val");
 
@@ -61,7 +62,7 @@ BOOST_AUTO_TEST_CASE(test_config_load) {
 }
 
 BOOST_AUTO_TEST_CASE(test_config_load_invalid) {
-    auto config_opt = Config::load_from_file("nonexistent_file.json");
+    auto config_opt = cmake_init::Config::load_from_file("nonexistent_file.json");
     BOOST_CHECK(!config_opt.has_value());
 }
 
