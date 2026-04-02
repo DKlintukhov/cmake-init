@@ -18,26 +18,31 @@
  */
 
 
-#ifndef PROMPTER_H
-#define PROMPTER_H
+#ifndef FORMATTER_H
+#define FORMATTER_H
 
-#include "config.h"
-#include <iostream>
+#include "cmake-init/generation_context.h"
 #include <string>
 
-class Prompter {
-public:
-    explicit Prompter(std::istream& in = std::cin, std::ostream& out = std::cout);
+namespace cmake_init {
 
-    void prompt_all(Config& config);
+class Formatter
+{
+public:
+    explicit Formatter(const GenerationContext& ctx);
+
+    std::string format_cmake_version() const;
+    std::string format_project() const;
+    std::string format_options() const;
+    std::string format_cxx_standard() const;
+    std::string format_c_standard() const;
+    std::string format_compile_commands() const;
+    std::string format_bin() const;
 
 private:
-    std::istream& in_;
-    std::ostream& out_;
-
-    std::string prompt_string(const Question& q);
-    std::string prompt_boolean(const Question& q);
-    std::string prompt_choice(const Question& q);
+    const GenerationContext& ctx_;
 };
+
+} // namespace cmake_init
 
 #endif

@@ -18,27 +18,30 @@
  */
 
 
-#ifndef CMAKE_LISTS_FORMATTER_H
-#define CMAKE_LISTS_FORMATTER_H
+#ifndef PROMPTER_H
+#define PROMPTER_H
 
-#include "generation_context.h"
+#include "cmake-init/config.h"
+#include <iostream>
+#include <string>
 
+namespace cmake_init {
 
-class CMakeListsFormatter
-{
+class Prompter {
 public:
-    explicit CMakeListsFormatter(const GenerationContext& ctx);
+    explicit Prompter(std::istream& in = std::cin, std::ostream& out = std::cout);
 
-    std::string format_cmake_version() const;
-    std::string format_project() const;
-    std::string format_options() const;
-    std::string format_cxx_standard() const;
-    std::string format_c_standard() const;
-    std::string format_compile_commands() const;
-    std::string format_bin() const;
+    void prompt_all(Config& config);
 
 private:
-    const GenerationContext& ctx_;
+    std::istream& in_;
+    std::ostream& out_;
+
+    std::string prompt_string(const Question& q);
+    std::string prompt_boolean(const Question& q);
+    std::string prompt_choice(const Question& q);
 };
+
+} // namespace cmake_init
 
 #endif

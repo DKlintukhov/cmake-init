@@ -1,18 +1,28 @@
-add_executable(${TARGET}_test
-    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/config.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/generation_context.cpp
-    ${SRC}
+# Test executable
+add_executable(cmake-init_tests
+    main.cpp
+    config.cpp
+    generation_context.cpp
+    formatter.cpp
 )
 
-target_include_directories(${TARGET}_test PRIVATE ${CMAKE_SOURCE_DIR}/src)
-target_link_libraries(${TARGET}_test PRIVATE Boost::unit_test_framework Boost::json)
+# Link against the core library and Boost.Test
+target_link_libraries(cmake-init_tests
+    PRIVATE
+        libcmake-init
+        Boost::unit_test_framework
+)
 
-add_test(NAME ${TARGET}_test COMMAND ${TARGET}_test)
+# Add the test to ctest
+# Register each Boost.Test suite as a separate ctest entry.
+add_test(NAME test_config             COMMAND cmake-init_tests --run_test=ConfigTestSuite)
+add_test(NAME test_generation_context COMMAND cmake-init_tests --run_test=GenerationContextTestSuite)
+add_test(NAME test_formatter          COMMAND cmake-init_tests --run_test=CMakeListsFormatterTestSuite)
 
-# Copy config.json to the test output directory
-add_custom_command(TARGET ${TARGET}_test POST_BUILD
+# Copy configuration file needed for testing to the build directory.
+add_custom_command(TARGET cmake-init_tests POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_SOURCE_DIR}/config.json"
-        "$<TARGET_FILE_DIR:${TARGET}_test>"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../config.json"
+        "$<TARGET_FILE_DIR:cmake-init_tests>/config.json"
+    COMMENT "Copying configuration file to test directory"
 )
