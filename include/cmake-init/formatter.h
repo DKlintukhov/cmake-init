@@ -37,7 +37,10 @@ public:
     std::string format_cxx_standard() const;
     std::string format_c_standard() const;
     std::string format_compile_commands() const;
+    std::string format_dependencies() const;
     std::string format_bin() const;
+    std::string format_src_cmake() const;
+    std::string format_include_cmake() const;
 
 private:
     const GenerationContext& ctx_;
