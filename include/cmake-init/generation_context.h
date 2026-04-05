@@ -43,7 +43,6 @@ public:
     std::string language() const;
     int cxx_standard() const;
     int c_standard() const;
-    //std::string package_manager() const; TODO: Check package_maanger
     bool enable_testing() const;
     bool enable_clang_tidy() const;
     bool enable_cppcheck() const;

@@ -44,14 +44,17 @@ int main(int argc, const char** argv)
     cmake_init::GenerationContext gen_context(config);
     cmake_init::Formatter formatter(gen_context);
 
-    std::println("--- Generated CMakeLists.txt ---");
+    std::println("=== CMakeLists.txt ===");
     std::println("{}", formatter.format_cmake_version());
     std::println("{}", formatter.format_project());
     std::println("{}", formatter.format_options());
     std::println("{}", formatter.format_cxx_standard());
     std::println("{}", formatter.format_c_standard());
     std::println("{}", formatter.format_compile_commands());
+    std::println("{}", formatter.format_dependencies());
     std::println("{}", formatter.format_bin());
+    std::println("{}", formatter.format_src_cmake());
+    std::println("{}", formatter.format_include_cmake());
 
     return 0;
 }

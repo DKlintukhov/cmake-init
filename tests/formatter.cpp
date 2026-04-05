@@ -86,13 +86,33 @@ BOOST_AUTO_TEST_CASE(test_format_standards) {
     BOOST_CHECK(formatter.format_c_standard().find("set(CMAKE_C_STANDARD 17)") != std::string::npos);
 }
 
-BOOST_AUTO_TEST_CASE(test_format_bin_executable) {
+BOOST_AUTO_TEST_CASE(test_format_bin) {
     cmake_init::Config config;
-    config.set_answer("project_name", "my_app");
     cmake_init::GenerationContext ctx(config);
     cmake_init::Formatter formatter(ctx);
 
-    BOOST_CHECK_EQUAL(formatter.format_bin(), "add_executable(${TARGET} ${SRC})\n");
+    std::string result = formatter.format_bin();
+    BOOST_CHECK(result.find("add_subdirectory(src)") != std::string::npos);
+}
+
+BOOST_AUTO_TEST_CASE(test_format_src_cmake) {
+    cmake_init::Config config;
+    cmake_init::GenerationContext ctx(config);
+    cmake_init::Formatter formatter(ctx);
+
+    std::string result = formatter.format_src_cmake();
+    BOOST_CHECK(result.find("add_library(${TARGET} ${SRC})") != std::string::npos);
+    BOOST_CHECK(result.find("target_include_directories") != std::string::npos);
+}
+
+BOOST_AUTO_TEST_CASE(test_format_include_cmake) {
+    cmake_init::Config config;
+    cmake_init::GenerationContext ctx(config);
+    cmake_init::Formatter formatter(ctx);
+
+    std::string result = formatter.format_include_cmake();
+    BOOST_CHECK(result.find("target_include_directories") != std::string::npos);
+    BOOST_CHECK(result.find("INTERFACE") != std::string::npos);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

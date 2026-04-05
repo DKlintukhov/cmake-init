@@ -77,11 +77,35 @@ std::string Formatter::format_compile_commands() const {
 }
 
 std::string Formatter::format_bin() const {
-    switch (ctx_.target_type()) {
-        case TargetType::Executable: return "add_executable(${TARGET} ${SRC})\n";
-        case TargetType::Static_lib: return "add_library(${TARGET} static ${SRC})\n";
-        default: return "add_library(${TARGET} ${SRC})\n";
-    }
+    std::stringstream ss;
+    ss << "add_subdirectory(src)\n";
+    return ss.str();
+}
+
+std::string Formatter::format_dependencies() const {
+    std::stringstream ss;
+    ss << "# Dependencies (using FetchContent)\n";
+    ss << "# FetchContent_Declare(\n";
+    ss << "#     my_dependency\n";
+    ss << "#     GIT_REPOSITORY https://github.com/example/repo\n";
+    ss << "#     GIT_TAG main\n";
+    ss << "# )\n";
+    ss << "# FetchContent_MakeAvailable(my_dependency)\n";
+    return ss.str();
+}
+
+std::string Formatter::format_src_cmake() const {
+    std::stringstream ss;
+    ss << "add_library(${TARGET} ${SRC})\n";
+    ss << "target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../include)\n";
+    ss << "target_link_libraries(${TARGET} PRIVATE ${LINK_LIBS})\n";
+    return ss.str();
+}
+
+std::string Formatter::format_include_cmake() const {
+    std::stringstream ss;
+    ss << "target_include_directories(${TARGET} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})\n";
+    return ss.str();
 }
 
 } // namespace cmake_init

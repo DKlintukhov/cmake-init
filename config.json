@@ -53,13 +53,6 @@
       "default": "23"
     },
     {
-      "id": "package_manager",
-      "prompt": "Package Manager",
-      "type": "choice",
-      "options": ["None", "vcpkg", "conan"],
-      "default": "None"
-    },
-    {
       "id": "enable_testing",
       "prompt": "Enable Testing?",
       "type": "boolean",
