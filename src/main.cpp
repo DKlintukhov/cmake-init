@@ -1,5 +1,5 @@
 /*
- *  This file is part of nzbget. See <https://github.com/DKlintukhov/cmake-init>.
+ *  This file is part of cmake-init.
  *
  *  Copyright (C) 2026 Denis <denis.klintukhov@gmail.com>
  *
@@ -21,7 +21,7 @@
 #include "cmake-init/config.h"
 #include "cmake-init/prompter.h"
 #include "cmake-init/generation_context.h"
-#include "cmake-init/formatter.h"
+#include "cmake-init/project_writer.h"
 #include <print>
 #include <iostream>
 #include <filesystem>
@@ -42,19 +42,14 @@ int main(int argc, const char** argv)
     prompter.prompt_all(config);
 
     cmake_init::GenerationContext gen_context(config);
-    cmake_init::Formatter formatter(gen_context);
+    cmake_init::ProjectWriter writer(gen_context);
 
-    std::println("=== CMakeLists.txt ===");
-    std::println("{}", formatter.format_cmake_version());
-    std::println("{}", formatter.format_project());
-    std::println("{}", formatter.format_options());
-    std::println("{}", formatter.format_cxx_standard());
-    std::println("{}", formatter.format_c_standard());
-    std::println("{}", formatter.format_compile_commands());
-    std::println("{}", formatter.format_dependencies());
-    std::println("{}", formatter.format_bin());
-    std::println("{}", formatter.format_src_cmake());
-    std::println("{}", formatter.format_include_cmake());
+    auto result = writer.write();
+    if (!result) {
+        std::println(std::cerr, "Failed to write project: {}", result.error());
+        return 1;
+    }
 
+    std::println("Project created successfully!");
     return 0;
 }

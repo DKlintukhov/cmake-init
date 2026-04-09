@@ -3,6 +3,7 @@ add_library(libcmake-init
     prompter.cpp
     generation_context.cpp
     formatter.cpp
+    project_writer.cpp
 )
 
 target_include_directories(libcmake-init
