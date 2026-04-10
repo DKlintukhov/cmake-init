@@ -47,14 +47,14 @@ void ProjectWriter::create_directories() const {
 void ProjectWriter::write_cmakeLists_txt() const {
     std::ofstream out(project_path() / "CMakeLists.txt");
     Formatter fmt(ctx_);
-    out << fmt.format_cmake_version();
-    out << fmt.format_project();
-    out << fmt.format_options();
-    out << fmt.format_cxx_standard();
-    out << fmt.format_c_standard();
-    out << fmt.format_compile_commands();
-    out << fmt.format_dependencies();
-    out << fmt.format_bin();
+    out << fmt.format_cmake_version() << '\n';
+    out << fmt.format_project() << '\n';
+    out << fmt.format_options() << '\n';
+    out << fmt.format_cxx_standard() << '\n';
+    out << fmt.format_c_standard() << '\n';
+    out << fmt.format_compile_commands() << '\n';
+    out << fmt.format_dependencies() << '\n';
+    out << fmt.format_bin() << '\n';
 }
 
 void ProjectWriter::write_src_cmake() const {
