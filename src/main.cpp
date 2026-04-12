@@ -29,6 +29,7 @@
 int main(int argc, const char** argv)
 {
     const auto exe_filepath = std::filesystem::path(argv[0]);
+    const auto location = argc > 1 ? std::filesystem::path(argv[1]) : std::filesystem::current_path();
     const auto config_filepath = exe_filepath.parent_path() / "config.json";
 
     auto config_result = cmake_init::Config::load_from_file(config_filepath);
@@ -42,14 +43,15 @@ int main(int argc, const char** argv)
     prompter.prompt_all(config);
 
     cmake_init::GenerationContext gen_context(config);
-    cmake_init::ProjectWriter writer(gen_context);
+    cmake_init::ProjectWriter writer(gen_context, location);
 
     auto result = writer.write();
     if (!result) {
-        std::println(std::cerr, "Failed to write project: {}", result.error());
+        std::println(std::cerr, "Failed to create the project: {}", result.error());
         return 1;
     }
 
-    std::println("Project created successfully!");
+    std::println("The project created successfully!");
+
     return 0;
 }

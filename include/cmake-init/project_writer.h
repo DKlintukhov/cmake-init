@@ -30,14 +30,14 @@ namespace cmake_init {
 
 class ProjectWriter {
 public:
-    explicit ProjectWriter(const GenerationContext& ctx);
+    explicit ProjectWriter(const GenerationContext& ctx, const std::filesystem::path& location);
 
     std::expected<void, std::string> write() const;
 
 private:
     const GenerationContext& ctx_;
+    const std::filesystem::path& location_;
 
-    std::filesystem::path project_path() const;
     void create_directories() const;
     void write_cmakeLists_txt() const;
     void write_src_cmake() const;

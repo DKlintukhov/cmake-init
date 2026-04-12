@@ -1,5 +1,5 @@
 /*
- *  This file is part of nzbget. See <https://github.com/DKlintukhov/cmake-init>.
+ *  This file is part of cmake-init. See <https://github.com/DKlintukhov/cmake-init>.
  *
  *  Copyright (C) 2026 Denis <denis.klintukhov@gmail.com>
  *
@@ -35,7 +35,6 @@ class GenerationContext {
 public:
     explicit GenerationContext(const Config& config);
 
-    std::string location() const;
     std::string project_name() const;
     std::string project_version() const;
     TargetType target_type() const;

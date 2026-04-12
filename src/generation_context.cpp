@@ -1,5 +1,5 @@
 /*
- *  This file is part of nzbget. See <https://github.com/DKlintukhov/cmake-init>.
+ *  This file is part of cmake-init. See <https://github.com/DKlintukhov/cmake-init>.
  *
  *  Copyright (C) 2026 Denis <denis.klintukhov@gmail.com>
  *
@@ -23,10 +23,6 @@
 namespace cmake_init {
 
 GenerationContext::GenerationContext(const Config& config) : config_(config) {}
-
-std::string GenerationContext::location() const {
-    return std::string(config_.get_answer("location", "."));
-}
 
 std::string GenerationContext::project_name() const {
     return std::string(config_.get_answer("project_name", "my_project"));

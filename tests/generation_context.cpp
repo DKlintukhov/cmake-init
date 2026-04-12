@@ -1,5 +1,5 @@
 /*
- *  This file is part of nzbget. See <https://github.com/DKlintukhov/cmake-init>.
+ *  This file is part of cmake-init. See <https://github.com/DKlintukhov/cmake-init>.
  *
  *  Copyright (C) 2026 Denis <denis.klintukhov@gmail.com>
  *
