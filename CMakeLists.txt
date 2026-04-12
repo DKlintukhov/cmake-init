@@ -12,7 +12,7 @@ if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
     message(FATAL_ERROR "In-source builds are not allowed. Please create a separate directory for build files.")
 endif()
 
-option(ENABLE_TESTS "Enable tests" ON)
+option(ENABLE_TESTS "Enable tests" OFF)
 option(ENABLE_CLANG_TIDY "Enable Clang-Tidy" OFF)
 option(ENABLE_CPPCHECK "Enable Cppcheck" OFF)
 

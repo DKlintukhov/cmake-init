@@ -24,28 +24,28 @@
 
 namespace cmake_init {
 
-ProjectWriter::ProjectWriter(const GenerationContext& ctx) : ctx_(ctx) {}
+ProjectWriter::ProjectWriter(const GenerationContext& ctx, const std::filesystem::path& location)
+    : ctx_(ctx), location_(location) {}
 
 std::expected<void, std::string> ProjectWriter::write() const {
-    create_directories();
-    write_cmakeLists_txt();
-    write_src_cmake();
-    write_main_cpp();
-    write_header_h();
-    return {};
-}
-
-std::filesystem::path ProjectWriter::project_path() const {
-    return std::filesystem::path(ctx_.location());
+    try {
+        create_directories();
+        write_cmakeLists_txt();
+        write_src_cmake();
+        write_main_cpp();
+        write_header_h();
+        return {};
+    } catch (const std::exception& e) {
+        return std::unexpected(e.what());
+    }
 }
 
 void ProjectWriter::create_directories() const {
-    std::filesystem::create_directories(project_path());
-    std::filesystem::create_directories(project_path() / "src");
+    std::filesystem::create_directories(location_ / "src");
 }
 
 void ProjectWriter::write_cmakeLists_txt() const {
-    std::ofstream out(project_path() / "CMakeLists.txt");
+    std::ofstream out(location_ / "CMakeLists.txt");
     Formatter fmt(ctx_);
     out << fmt.format_cmake_version() << '\n';
     out << fmt.format_project() << '\n';
@@ -58,13 +58,13 @@ void ProjectWriter::write_cmakeLists_txt() const {
 }
 
 void ProjectWriter::write_src_cmake() const {
-    std::ofstream out(project_path() / "src" / "CMakeLists.txt");
+    std::ofstream out(location_ / "src" / "CMakeLists.txt");
     Formatter fmt(ctx_);
     out << fmt.format_src_cmake();
 }
 
 void ProjectWriter::write_main_cpp() const {
-    auto main_path = project_path() / "src" / "main.cpp";
+    auto main_path = location_ / "src" / "main.cpp";
     std::ofstream out(main_path);
     out << "int main(int argc, const char** argv) {\n";
     out << "    return 0;\n";
@@ -74,7 +74,7 @@ void ProjectWriter::write_main_cpp() const {
 void ProjectWriter::write_header_h() const {
     auto name = ctx_.project_name();
     std::string header_name = name + ".h";
-    auto header_path = project_path() / "include" / header_name;
+    auto header_path = location_ / "include" / header_name;
     std::filesystem::create_directories(header_path.parent_path());
 
     std::ofstream out(header_path);

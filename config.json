@@ -1,12 +1,6 @@
 {
   "questions": [
     {
-      "id": "location",
-      "prompt": "Project Location",
-      "type": "string",
-      "default": "."
-    },
-    {
       "id": "project_name",
       "prompt": "Project Name",
       "type": "string",
