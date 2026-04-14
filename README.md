@@ -34,8 +34,7 @@ This will prompt you through project configuration and output a complete CMake-b
 Run `cmake-init` without arguments to start the interactive prompt:
 
 ```bash
-./cmake-init
-Project Location [.]: my_project
+./cmake-init .
 Project Name [my_project]: 
 Project Version [0.1.0]: 
 Target Type
@@ -82,7 +81,7 @@ cmake --build build
 
 | Option | Description | Default |
 |--------|-------------|---------|
-| `ENABLE_TESTS` | Build test suite | ON |
+| `ENABLE_TESTS` | Build test suite | OFF |
 | `ENABLE_CLANG_TIDY` | Enable Clang-Tidy checks | OFF |
 | `ENABLE_CPPCHECK` | Enable Cppcheck static analysis | OFF |
 
