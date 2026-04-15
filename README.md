@@ -22,7 +22,7 @@ A CMake C++ project generator that sets up a complete project with sensible defa
 ## Quick Start
 
 ```bash
-cmake-init
+cmake-init .
 ```
 
 This will prompt you through project configuration and output a complete CMake-based project structure.

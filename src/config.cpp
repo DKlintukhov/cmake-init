@@ -20,7 +20,6 @@
 
 #include "cmake-init/config.h"
 #include <fstream>
-#include <sstream>
 #include <boost/json/src.hpp>
 
 namespace json = boost::json;
@@ -33,12 +32,12 @@ std::expected<Config, std::string> Config::load_from_file(const std::filesystem:
         return std::unexpected("Failed to open config file");
     }
 
-    std::stringstream buffer;
-    buffer << config_file.rdbuf();
+    std::string file_content((std::istreambuf_iterator<char>(config_file)),
+                              std::istreambuf_iterator<char>());
 
     json::value jv;
     boost::system::error_code ec;
-    jv = json::parse(buffer.str(), ec);
+    jv = json::parse(file_content, ec);
     if (ec) {
         return std::unexpected(std::string("Failed to parse config file: ") + ec.message());
     }
@@ -54,19 +53,19 @@ std::expected<Config, std::string> Config::load_from_file(const std::filesystem:
         const auto& q = q_val.as_object();
 
         Question question;
-        question.id = q.at("id").as_string().c_str();
-        question.prompt = q.at("prompt").as_string().c_str();
-        question.type = q.at("type").as_string().c_str();
+        question.id = std::string(q.at("id").as_string());
+        question.prompt = std::string(q.at("prompt").as_string());
+        question.type = std::string(q.at("type").as_string());
 
         if (question.type == "boolean") {
             question.default_val = q.at("default").as_bool() ? "true" : "false";
         } else {
-            question.default_val = q.at("default").as_string().c_str();
+            question.default_val = std::string(q.at("default").as_string());
         }
 
         if (question.type == "choice" && q.contains("options") && q.at("options").is_array()) {
             for (const auto& opt : q.at("options").as_array()) {
-                question.options.emplace_back(opt.as_string().c_str());
+                question.options.emplace_back(std::string(opt.as_string()));
             }
         }
 
