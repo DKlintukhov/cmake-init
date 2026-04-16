@@ -31,7 +31,6 @@ std::expected<void, std::string> ProjectWriter::write() const {
     try {
         create_directories();
         write_cmakeLists_txt();
-        write_src_cmake();
         write_main_cpp();
         write_header_h();
         return {};
@@ -55,11 +54,6 @@ void ProjectWriter::write_cmakeLists_txt() const {
     out << fmt.format_compile_commands() << '\n';
     out << fmt.format_dependencies() << '\n';
     out << fmt.format_bin() << '\n';
-}
-
-void ProjectWriter::write_src_cmake() const {
-    std::ofstream out(location_ / "src" / "CMakeLists.txt");
-    Formatter fmt(ctx_);
     out << fmt.format_src_cmake();
 }
 
