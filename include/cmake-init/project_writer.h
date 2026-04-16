@@ -40,7 +40,6 @@ private:
 
     void create_directories() const;
     void write_cmakeLists_txt() const;
-    void write_src_cmake() const;
     void write_main_cpp() const;
     void write_header_h() const;
 };

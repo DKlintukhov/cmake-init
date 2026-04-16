@@ -53,7 +53,6 @@ BOOST_AUTO_TEST_CASE(test_writer_creates_files_in_given_location) {
 
     // Check expected files exist
     BOOST_CHECK(fs::exists(tmp_root / "CMakeLists.txt"));
-    BOOST_CHECK(fs::exists(tmp_root / "src" / "CMakeLists.txt"));
     BOOST_CHECK(fs::exists(tmp_root / "src" / "main.cpp"));
     BOOST_CHECK(fs::exists(tmp_root / "include" / "TestLocation.h"));
 
