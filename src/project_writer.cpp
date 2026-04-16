@@ -52,7 +52,7 @@ void ProjectWriter::write_cmakeLists_txt() const {
     out << fmt.format_cxx_standard() << '\n';
     out << fmt.format_c_standard() << '\n';
     out << fmt.format_compile_commands() << '\n';
-    out << fmt.format_dependencies() << '\n';
+   // out << fmt.format_dependencies() << '\n';
     out << fmt.format_bin() << '\n';
 }
 

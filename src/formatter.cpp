@@ -68,10 +68,10 @@ std::string Formatter::format_compile_commands() const {
 }
 
 std::string Formatter::format_bin() const {
-    return std::string("add_library(${TARGET} ${SRC})\n") +
+    return std::string("set(SRC ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)\n") +
+        std::string("add_library(${TARGET} ${SRC})\n") +
         std::string("target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)\n") +
-        std::string("target_link_libraries(${TARGET} PRIVATE ${LINK_LIBS})\n") +
-        "add_subdirectory(src)\n";
+        std::string("target_link_libraries(${TARGET} PRIVATE ${LINK_LIBS})\n");
 }
 
 std::string Formatter::format_dependencies() const {
@@ -82,12 +82,6 @@ std::string Formatter::format_dependencies() const {
         std::string("#     GIT_TAG main\n") +
         std::string("# )\n") +
         std::string("# FetchContent_MakeAvailable(my_dependency)\n");
-}
-
-std::string Formatter::format_src_cmake() const {
-    return std::string("add_library(${TARGET} ${SRC})\n") +
-        std::string("target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../include)\n") +
-        std::string("target_link_libraries(${TARGET} PRIVATE ${LINK_LIBS})\n");
 }
 
 std::string Formatter::format_include_cmake() const {

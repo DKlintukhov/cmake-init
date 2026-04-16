@@ -92,17 +92,7 @@ BOOST_AUTO_TEST_CASE(test_format_bin) {
     cmake_init::Formatter formatter(ctx);
 
     std::string result = formatter.format_bin();
-    BOOST_CHECK(result.find("add_library(${TARGET} ${SRC})") != std::string::npos);
-    BOOST_CHECK(result.find("target_include_directories") != std::string::npos);
-    BOOST_CHECK(result.find("add_subdirectory(src)") != std::string::npos);
-}
-
-BOOST_AUTO_TEST_CASE(test_format_src_cmake) {
-    cmake_init::Config config;
-    cmake_init::GenerationContext ctx(config);
-    cmake_init::Formatter formatter(ctx);
-
-    std::string result = formatter.format_src_cmake();
+    BOOST_CHECK(result.find("set(SRC ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)") != std::string::npos);
     BOOST_CHECK(result.find("add_library(${TARGET} ${SRC})") != std::string::npos);
     BOOST_CHECK(result.find("target_include_directories") != std::string::npos);
 }
