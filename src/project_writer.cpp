@@ -54,7 +54,6 @@ void ProjectWriter::write_cmakeLists_txt() const {
     out << fmt.format_compile_commands() << '\n';
     out << fmt.format_dependencies() << '\n';
     out << fmt.format_bin() << '\n';
-    out << fmt.format_src_cmake();
 }
 
 void ProjectWriter::write_main_cpp() const {

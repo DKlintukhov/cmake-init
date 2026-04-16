@@ -68,7 +68,10 @@ std::string Formatter::format_compile_commands() const {
 }
 
 std::string Formatter::format_bin() const {
-    return "add_subdirectory(src)\n";
+    return std::string("add_library(${TARGET} ${SRC})\n") +
+        std::string("target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)\n") +
+        std::string("target_link_libraries(${TARGET} PRIVATE ${LINK_LIBS})\n") +
+        "add_subdirectory(src)\n";
 }
 
 std::string Formatter::format_dependencies() const {
