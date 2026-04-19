@@ -77,9 +77,10 @@ std::string Formatter::format_compile_commands() const {
 }
 
 std::string Formatter::format_bin() const {
-    std::stringstream ss;
-    ss << "add_subdirectory(src)\n";
-    return ss.str();
+    return std::string("add_library(${TARGET} ${SRC})\n") +
+        std::string("target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)\n") +
+        std::string("target_link_libraries(${TARGET} PRIVATE ${LINK_LIBS})\n") +
+        "add_subdirectory(src)\n";
 }
 
 std::string Formatter::format_dependencies() const {
@@ -103,9 +104,7 @@ std::string Formatter::format_src_cmake() const {
 }
 
 std::string Formatter::format_include_cmake() const {
-    std::stringstream ss;
-    ss << "target_include_directories(${TARGET} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})\n";
-    return ss.str();
+    return "target_include_directories(${TARGET} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})\n";
 }
 
 } // namespace cmake_init

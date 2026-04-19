@@ -92,6 +92,8 @@ BOOST_AUTO_TEST_CASE(test_format_bin) {
     cmake_init::Formatter formatter(ctx);
 
     std::string result = formatter.format_bin();
+    BOOST_CHECK(result.find("add_library(${TARGET} ${SRC})") != std::string::npos);
+    BOOST_CHECK(result.find("target_include_directories") != std::string::npos);
     BOOST_CHECK(result.find("add_subdirectory(src)") != std::string::npos);
 }
 
