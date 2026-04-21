@@ -16,6 +16,10 @@ target_include_directories(libcmake-init
 
 target_link_libraries(libcmake-init PUBLIC Boost::json)
 
+set_target_properties(libcmake-init PROPERTIES
+    POSITION_INDEPENDENT_CODE ON
+)
+
 add_executable(cmake-init main.cpp)
 target_link_libraries(cmake-init PRIVATE libcmake-init)
 
@@ -24,4 +28,12 @@ add_custom_command(TARGET cmake-init POST_BUILD
         ${CMAKE_CURRENT_SOURCE_DIR}/../config.json
         $<TARGET_FILE_DIR:cmake-init>/config.json
     COMMENT "Copying configuration file to build directory"
+)
+
+install(TARGETS cmake-init
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../config.json
+    DESTINATION ${CMAKE_INSTALL_SHAREDIR}/cmake-init
 )
