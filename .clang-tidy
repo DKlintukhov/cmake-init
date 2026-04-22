@@ -1,0 +1,8 @@
+---
+Checks: '-*,cppcoreguidelines-*,security-*,readability-*'
+WarningsAsErrors: ''
+CheckOptions:
+  - key: readability-identifier-length.MinimumVariableNameLength
+    value: 2
+  - key: cppcoreguidelines-avoid-non-const-global-variables.IgnoreVariables
+    value: '*_registrar*,*suite_registrar*'

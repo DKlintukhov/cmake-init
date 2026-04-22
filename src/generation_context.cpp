@@ -17,54 +17,55 @@
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "cmake-init/generation_context.h"
 
 namespace cmake_init {
 
-GenerationContext::GenerationContext(const Config& config) : config_(config) {}
+GenerationContext::GenerationContext(const Config &config) : config_(config) {}
 
 std::string GenerationContext::project_name() const {
-    return std::string(config_.get_answer("project_name", "my_project"));
+  return std::string(config_.get_answer("project_name", "my_project"));
 }
 
 std::string GenerationContext::project_version() const {
-    return std::string(config_.get_answer("project_version", "0.1.0"));
+  return std::string(config_.get_answer("project_version", "0.1.0"));
 }
 
 TargetType GenerationContext::target_type() const {
-    const auto type = config_.get_answer("target_type", "Executable");
-    if (type == "Static Library") return TargetType::Static_lib;
-    if (type == "Shared Library") return TargetType::Shared_lib;
-    return TargetType::Executable;
+  const auto type = config_.get_answer("target_type", "Executable");
+  if (type == "Static Library")
+    return TargetType::Static_lib;
+  if (type == "Shared Library")
+    return TargetType::Shared_lib;
+  return TargetType::Executable;
 }
 
 std::string GenerationContext::cmake_version() const {
-    return std::string(config_.get_answer("cmake_version", "3.25"));
+  return std::string(config_.get_answer("cmake_version", "3.25"));
 }
 
 std::string GenerationContext::language() const {
-    return std::string(config_.get_answer("language", "C++"));
+  return std::string(config_.get_answer("language", "C++"));
 }
 
 int GenerationContext::cxx_standard() const {
-    return std::stoi(std::string(config_.get_answer("cxx_standard", "23")));
+  return std::stoi(std::string(config_.get_answer("cxx_standard", "23")));
 }
 
 int GenerationContext::c_standard() const {
-    return std::stoi(std::string(config_.get_answer("c_standard", "23")));
+  return std::stoi(std::string(config_.get_answer("c_standard", "23")));
 }
 
 bool GenerationContext::enable_testing() const {
-    return config_.get_answer("enable_testing", "false") == "true";
+  return config_.get_answer("enable_testing", "false") == "true";
 }
 
 bool GenerationContext::enable_clang_tidy() const {
-    return config_.get_answer("enable_clang_tidy", "false") == "true";
+  return config_.get_answer("enable_clang_tidy", "false") == "true";
 }
 
 bool GenerationContext::enable_cppcheck() const {
-    return config_.get_answer("enable_cppcheck", "false") == "true";
+  return config_.get_answer("enable_cppcheck", "false") == "true";
 }
 
 } // namespace cmake_init

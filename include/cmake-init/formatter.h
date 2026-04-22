@@ -17,7 +17,6 @@
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef FORMATTER_H
 #define FORMATTER_H
 
@@ -26,24 +25,23 @@
 
 namespace cmake_init {
 
-class Formatter
-{
+class Formatter {
 public:
-    explicit Formatter(const GenerationContext& ctx);
+  explicit Formatter(const GenerationContext &ctx);
 
-    std::string format_cmake_version() const;
-    std::string format_project() const;
-    std::string format_options() const;
-    std::string format_cxx_standard() const;
-    std::string format_c_standard() const;
-    std::string format_compile_commands() const;
-    std::string format_dependencies() const;
-    std::string format_bin() const;
-    std::string format_src_cmake() const;
-    std::string format_include_cmake() const;
+  std::string format_cmake_version() const;
+  std::string format_project() const;
+  std::string format_options() const;
+  std::string format_cxx_standard() const;
+  std::string format_c_standard() const;
+  std::string format_compile_commands() const;
+  std::string format_dependencies() const;
+  std::string format_bin() const;
+  std::string format_src_cmake() const;
+  std::string format_include_cmake() const;
 
 private:
-    const GenerationContext& ctx_;
+  const GenerationContext &ctx_;
 };
 
 } // namespace cmake_init
