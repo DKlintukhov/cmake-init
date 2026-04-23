@@ -17,83 +17,88 @@
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "cmake-init/prompter.h"
 #include <algorithm>
 #include <cctype>
 
 namespace cmake_init {
 
-Prompter::Prompter(std::istream& in, std::ostream& out) : in_(in), out_(out) {}
+Prompter::Prompter(std::istream &in, std::ostream &out) : in_(in), out_(out) {}
 
-void Prompter::prompt_all(Config& config) {
-    for (const auto& q : config.questions()) {
-        std::string answer;
-        if (q.type == "string") {
-            answer = prompt_string(q);
-        } else if (q.type == "boolean") {
-            answer = prompt_boolean(q);
-        } else if (q.type == "choice") {
-            answer = prompt_choice(q);
-        }
-        config.set_answer(q.id, answer);
+void Prompter::prompt_all(Config &config) {
+  for (const auto &q : config.questions()) {
+    std::string answer;
+    if (q.type == "string") {
+      answer = prompt_string(q);
+    } else if (q.type == "boolean") {
+      answer = prompt_boolean(q);
+    } else if (q.type == "choice") {
+      answer = prompt_choice(q);
     }
+    config.set_answer(q.id, answer);
+  }
 }
 
-std::string Prompter::prompt_string(const Question& q) {
-    out_ << q.prompt << " [" << q.default_val << "]: ";
-    std::string input;
-    std::getline(in_, input);
-    return input.empty() ? q.default_val : input;
+std::string Prompter::prompt_string(const Question &q) {
+  out_ << q.prompt << " [" << q.default_val << "]: ";
+  std::string input;
+  std::getline(in_, input);
+  return input.empty() ? q.default_val : input;
 }
 
-std::string Prompter::prompt_boolean(const Question& q) {
-    std::string def_label = (q.default_val == "true") ? "Y/n" : "y/N";
-    out_ << q.prompt << " (" << def_label << "): ";
+std::string Prompter::prompt_boolean(const Question &q) {
+  std::string def_label = (q.default_val == "true") ? "Y/n" : "y/N";
+  out_ << q.prompt << " (" << def_label << "): ";
 
-    std::string input;
-    std::getline(in_, input);
-    if (input.empty()) return q.default_val;
-
-    std::transform(input.begin(), input.end(), input.begin(), [](unsigned char c){ return std::tolower(c); });
-    if (input == "y" || input == "yes" || input == "true") return "true";
-    if (input == "n" || input == "no" || input == "false") return "false";
-
+  std::string input;
+  std::getline(in_, input);
+  if (input.empty())
     return q.default_val;
+
+  std::transform(input.begin(), input.end(), input.begin(),
+                 [](unsigned char c) { return std::tolower(c); });
+  if (input == "y" || input == "yes" || input == "true")
+    return "true";
+  if (input == "n" || input == "no" || input == "false")
+    return "false";
+
+  return q.default_val;
 }
 
-std::string Prompter::prompt_choice(const Question& q) {
-    out_ << q.prompt << "\n";
-    for (size_t i = 0; i < q.options.size(); ++i) {
-        out_ << "  " << i + 1 << ". " << q.options[i] << "\n";
+std::string Prompter::prompt_choice(const Question &q) {
+  out_ << q.prompt << "\n";
+  for (size_t i = 0; i < q.options.size(); ++i) {
+    out_ << "  " << i + 1 << ". " << q.options[i] << "\n";
+  }
+
+  size_t default_idx = 0;
+  for (size_t i = 0; i < q.options.size(); ++i) {
+    if (q.options[i] == q.default_val) {
+      default_idx = i + 1;
+      break;
     }
+  }
 
-    size_t default_idx = 0;
-    for (size_t i = 0; i < q.options.size(); ++i) {
-        if (q.options[i] == q.default_val) {
-            default_idx = i + 1;
-            break;
-        }
-    }
+  out_ << "Enter choice [1-" << q.options.size() << ", default: " << default_idx << "]: ";
 
-    out_ << "Enter choice [1-" << q.options.size() << ", default: " << default_idx << "]: ";
-
-    std::string input;
-    std::getline(in_, input);
-    if (input.empty()) return q.default_val;
-
-    try {
-        int choice = std::stoi(input);
-        if (choice >= 1 && static_cast<size_t>(choice) <= q.options.size()) {
-            return q.options[choice - 1];
-        }
-    } catch (...) {
-        // Fallback to searching by string name
-        auto it = std::find(q.options.begin(), q.options.end(), input);
-        if (it != q.options.end()) return *it;
-    }
-
+  std::string input;
+  std::getline(in_, input);
+  if (input.empty())
     return q.default_val;
+
+  try {
+    int choice = std::stoi(input);
+    if (choice >= 1 && static_cast<size_t>(choice) <= q.options.size()) {
+      return q.options[choice - 1];
+    }
+  } catch (...) {
+    // Fallback to searching by string name
+    auto it = std::find(q.options.begin(), q.options.end(), input);
+    if (it != q.options.end())
+      return *it;
+  }
+
+  return q.default_val;
 }
 
 } // namespace cmake_init

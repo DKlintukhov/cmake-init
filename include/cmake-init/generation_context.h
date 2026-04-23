@@ -17,7 +17,6 @@
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef GENERATION_CONTEXT_H
 #define GENERATION_CONTEXT_H
 
@@ -25,29 +24,25 @@
 
 namespace cmake_init {
 
-enum class TargetType {
-    Executable,
-    Static_lib,
-    Shared_lib
-};
+enum class TargetType { Executable, Static_lib, Shared_lib };
 
 class GenerationContext {
 public:
-    explicit GenerationContext(const Config& config);
+  explicit GenerationContext(const Config &config);
 
-    std::string project_name() const;
-    std::string project_version() const;
-    TargetType target_type() const;
-    std::string cmake_version() const;
-    std::string language() const;
-    int cxx_standard() const;
-    int c_standard() const;
-    bool enable_testing() const;
-    bool enable_clang_tidy() const;
-    bool enable_cppcheck() const;
+  std::string project_name() const;
+  std::string project_version() const;
+  TargetType target_type() const;
+  std::string cmake_version() const;
+  std::string language() const;
+  int cxx_standard() const;
+  int c_standard() const;
+  bool enable_testing() const;
+  bool enable_clang_tidy() const;
+  bool enable_cppcheck() const;
 
 private:
-    const Config& config_;
+  const Config &config_;
 };
 
 } // namespace cmake_init

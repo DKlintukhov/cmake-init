@@ -17,31 +17,30 @@
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef PROJECT_WRITER_H
 #define PROJECT_WRITER_H
 
 #include "cmake-init/generation_context.h"
+#include <expected>
 #include <filesystem>
 #include <string>
-#include <expected>
 
 namespace cmake_init {
 
 class ProjectWriter {
 public:
-    explicit ProjectWriter(const GenerationContext& ctx, const std::filesystem::path& location);
+  explicit ProjectWriter(const GenerationContext &ctx, const std::filesystem::path &location);
 
-    std::expected<void, std::string> write() const;
+  std::expected<void, std::string> write() const;
 
 private:
-    const GenerationContext& ctx_;
-    const std::filesystem::path& location_;
+  const GenerationContext &ctx_;
+  const std::filesystem::path &location_;
 
-    void create_directories() const;
-    void write_cmakeLists_txt() const;
-    void write_main_cpp() const;
-    void write_header_h() const;
+  void create_directories() const;
+  void write_cmakeLists_txt() const;
+  void write_main_cpp() const;
+  void write_header_h() const;
 };
 
 } // namespace cmake_init

@@ -17,7 +17,6 @@
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #ifndef PROMPTER_H
 #define PROMPTER_H
 
@@ -29,17 +28,17 @@ namespace cmake_init {
 
 class Prompter {
 public:
-    explicit Prompter(std::istream& in = std::cin, std::ostream& out = std::cout);
+  explicit Prompter(std::istream &in = std::cin, std::ostream &out = std::cout);
 
-    void prompt_all(Config& config);
+  void prompt_all(Config &config);
 
 private:
-    std::istream& in_;
-    std::ostream& out_;
+  std::istream &in_;
+  std::ostream &out_;
 
-    std::string prompt_string(const Question& q);
-    std::string prompt_boolean(const Question& q);
-    std::string prompt_choice(const Question& q);
+  std::string prompt_string(const Question &q);
+  std::string prompt_boolean(const Question &q);
+  std::string prompt_choice(const Question &q);
 };
 
 } // namespace cmake_init

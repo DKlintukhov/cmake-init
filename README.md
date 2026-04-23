@@ -10,9 +10,11 @@ A CMake C++ project generator that sets up a complete project with sensible defa
 - C++ and C standard selection (C++11 through C++26, C11, C17, C23)
 - Testing framework support (GTest, Catch2, Boost.Test)
 - Static analysis integration (Clang-Tidy, Cppcheck)
+- Code formatting (Clang-Format)
 - Modular project structure with separate `src/`, `include/`, and `tests/` directories
 - FetchContent-based dependency management template
 - Out-of-source builds enforced
+- Configuration files (`.clang-format`, `.clang-tidy`) for consistent code style
 
 ## Requirements
 
@@ -83,13 +85,34 @@ cmake --build build
 |--------|-------------|---------|
 | `ENABLE_TESTS` | Build test suite | OFF |
 | `ENABLE_CLANG_TIDY` | Enable Clang-Tidy checks | OFF |
+| `ENABLE_CLANG_FORMAT` | Enable Clang-Format code formatting | OFF |
 | `ENABLE_CPPCHECK` | Enable Cppcheck static analysis | OFF |
 
 Example with options:
 
 ```bash
-cmake -B build -DENABLE_CLANG_TIDY=ON
+cmake -B build -DENABLE_CLANG_TIDY=ON -DENABLE_CLANG_FORMAT=ON
 cmake --build build
+```
+
+### Code Formatting
+
+To format source code with clang-format (requires `clang-format` installed):
+
+```bash
+cmake -B build -DENABLE_CLANG_FORMAT=ON
+cmake --build build --target clang-format
+```
+
+### Static Analysis
+
+Clang-Tidy runs automatically during compilation when enabled (requires `clang-tidy` installed).
+
+For Cppcheck (requires `cppcheck` installed):
+
+```bash
+cmake -B build -DENABLE_CPPCHECK=ON
+cmake --build build --target cppcheck
 ```
 
 ## Testing

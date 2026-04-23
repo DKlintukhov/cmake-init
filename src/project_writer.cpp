@@ -17,65 +17,64 @@
  *  along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-
 #include "cmake-init/project_writer.h"
 #include "cmake-init/formatter.h"
 #include <fstream>
 
 namespace cmake_init {
 
-ProjectWriter::ProjectWriter(const GenerationContext& ctx, const std::filesystem::path& location)
+ProjectWriter::ProjectWriter(const GenerationContext &ctx, const std::filesystem::path &location)
     : ctx_(ctx), location_(location) {}
 
 std::expected<void, std::string> ProjectWriter::write() const {
-    try {
-        create_directories();
-        write_cmakeLists_txt();
-        write_main_cpp();
-        write_header_h();
-        return {};
-    } catch (const std::exception& e) {
-        return std::unexpected(e.what());
-    }
+  try {
+    create_directories();
+    write_cmakeLists_txt();
+    write_main_cpp();
+    write_header_h();
+    return {};
+  } catch (const std::exception &e) {
+    return std::unexpected(e.what());
+  }
 }
 
 void ProjectWriter::create_directories() const {
-    std::filesystem::create_directories(location_ / "src");
+  std::filesystem::create_directories(location_ / "src");
 }
 
 void ProjectWriter::write_cmakeLists_txt() const {
-    std::ofstream out(location_ / "CMakeLists.txt");
-    Formatter fmt(ctx_);
-    out << fmt.format_cmake_version() << '\n';
-    out << fmt.format_project() << '\n';
-    out << fmt.format_options() << '\n';
-    out << fmt.format_cxx_standard() << '\n';
-    out << fmt.format_c_standard() << '\n';
-    out << fmt.format_compile_commands() << '\n';
-    out << fmt.format_dependencies() << '\n';
-    out << fmt.format_bin() << '\n';
+  std::ofstream out(location_ / "CMakeLists.txt");
+  Formatter fmt(ctx_);
+  out << fmt.format_cmake_version() << '\n';
+  out << fmt.format_project() << '\n';
+  out << fmt.format_options() << '\n';
+  out << fmt.format_cxx_standard() << '\n';
+  out << fmt.format_c_standard() << '\n';
+  out << fmt.format_compile_commands() << '\n';
+  out << fmt.format_dependencies() << '\n';
+  out << fmt.format_bin() << '\n';
 }
 
 void ProjectWriter::write_main_cpp() const {
-    auto main_path = location_ / "src" / "main.cpp";
-    std::ofstream out(main_path);
-    out << "int main(int argc, const char** argv) {\n";
-    out << "    return 0;\n";
-    out << "}\n";
+  auto main_path = location_ / "src" / "main.cpp";
+  std::ofstream out(main_path);
+  out << "int main(int argc, const char** argv) {\n";
+  out << "    return 0;\n";
+  out << "}\n";
 }
 
 void ProjectWriter::write_header_h() const {
-    auto name = ctx_.project_name();
-    std::string header_name = name + ".h";
-    auto header_path = location_ / "include" / header_name;
-    std::filesystem::create_directories(header_path.parent_path());
+  auto name = ctx_.project_name();
+  std::string header_name = name + ".h";
+  auto header_path = location_ / "include" / header_name;
+  std::filesystem::create_directories(header_path.parent_path());
 
-    std::ofstream out(header_path);
-    out << "#ifndef " << name << "_H\n";
-    out << "#define " << name << "_H\n\n";
-    out << "namespace " << name << " {\n\n";
-    out << "} // namespace " << name << "\n\n";
-    out << "#endif\n";
+  std::ofstream out(header_path);
+  out << "#ifndef " << name << "_H\n";
+  out << "#define " << name << "_H\n\n";
+  out << "namespace " << name << " {\n\n";
+  out << "} // namespace " << name << "\n\n";
+  out << "#endif\n";
 }
 
 } // namespace cmake_init
