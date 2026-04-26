@@ -1,0 +1,69 @@
+# CI workflow for cmake-init on multiple platforms
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        include:
+          # Windows (MSVC)
+          - os: windows-latest
+            cpp_compiler: cl
+            c_compiler: cl
+            generator: "Visual Studio 17 2022"
+          # Linux (GCC)
+          - os: ubuntu-latest
+            cpp_compiler: g++
+            c_compiler: gcc
+            generator: "Unix Makefiles"
+          # Linux (Clang)
+          - os: ubuntu-latest
+            cpp_compiler: clang++
+            c_compiler: clang
+            generator: "Unix Makefiles"
+          # macOS (Clang)
+          - os: macos-latest
+            cpp_compiler: clang++
+            c_compiler: clang
+            generator: "Unix Makefiles"
+          # FreeBSD (Clang)
+          - os: freebsd-latest
+            cpp_compiler: clang++
+            c_compiler: clang
+            generator: "Unix Makefiles"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set output directory
+        id: strings
+        shell: bash
+        run: |
+          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+      - name: Configure CMake
+        run: >
+          cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+          -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+          -DCMAKE_BUILD_TYPE=Release
+          -DENABLE_TESTS=ON
+          -G "${{ matrix.generator }}"
+          -S ${{ github.workspace }}
+
+      - name: Build
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Release
+
+      - name: Test
+        working-directory: ${{ steps.strings.outputs.build-output-dir }}
+        run: ctest --build-config Release --output-on-failure
